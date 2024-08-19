@@ -1,1 +1,58 @@
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import numpy as np
+     
 
+#Initializing the figure for the plot
+fig,ax = plt.subplots(nrows=1, ncols=1,figsize = (5,5))
+#To fix the frame from not moving we can specify the limits
+ax.set_ylim(-50, 50)
+ax.set_xlim(-50, 50)
+
+#Initializing the curve and point
+ln, = plt.plot([], [], 'b-')
+pt, = plt.plot([], [], 'ro')
+
+xdata,ydata = [],[]
+
+def animate(i,r,R,line,point):
+    if i<95:
+      t = 0.1*i
+      x = r * np.cos(t)
+      y = r * np.sin(t)
+
+      xdata.append(x)
+      ydata.append(y)
+      line.set_data(xdata, ydata)
+      point.set_data(x,y)
+      return line,point
+    elif i<125:
+      t = 0.1*i
+      x = (R+r)*np.cos(t)/2 + r/2
+      y = (R+r)*np.sin(t)/2
+
+      xdata.append(x)
+      ydata.append(y)
+      line.set_data(xdata, ydata)
+      point.set_data(x,y)
+      return line,point
+    else:
+      t = 0.1*i
+      x = R * np.cos(t)
+      y = R * np.sin(t)
+
+      xdata.append(x)
+      ydata.append(y)
+      line.set_data(xdata, ydata)
+      point.set_data(x,y)
+      return line,point
+
+
+
+
+radius = 20
+Rad = 40
+anim = animation.FuncAnimation(fig, animate, frames = 250, blit = True, fargs = (radius,Rad,ln,pt))
+anim.save('Hohmann transfer.gif', writer = 'pillow',fps =20)
+
+     
